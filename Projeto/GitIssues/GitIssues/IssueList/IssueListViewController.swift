@@ -21,8 +21,14 @@ class IssueListViewController  : ViewController{
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
+        print("IssueList")
         tableView.dataSource = self
         tableView.delegate = self
+        
+        let nib = UINib(nibName: "IssueListTableViewCell", bundle: nil)
+        self.tableView.register(nib, forCellReuseIdentifier: "IssueListTableViewCell")
+        
+        tableView.reloadData()
         
     }
     
@@ -31,16 +37,23 @@ extension IssueListViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return issues.count
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        loadDetail()
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = { () -> IssueListTableViewCell in
                    let id = "IssueListTableViewCell"
                    guard let cell = tableView.dequeueReusableCell(withIdentifier: id) as? IssueListTableViewCell else {
                        return IssueListTableViewCell()
                    }
+            cell.data = issues[indexPath.row]
+            cell.updateValue()
                    return cell
                }()
         return cell
+    }
+    func loadDetail() {
+        self.navigationController?.pushViewController( IssueDetailViewController(nibName: "IssueDetailViewController", bundle: nil), animated: true)
     }
     
     

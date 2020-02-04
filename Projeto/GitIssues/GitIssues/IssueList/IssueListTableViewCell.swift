@@ -24,11 +24,19 @@ class IssueListTableViewCell: UITableViewCell {
         if(open){
             self.openClose.text = "OPEN"
             self.openClose.textColor = .green
-            self.openClose.backgroundColor = .systemFill
+            if #available(iOS 13.0, *) {
+                self.openClose.backgroundColor = .systemFill
+            } else {
+                // Fallback on earlier versions
+            }
         } else {
             self.openClose.text = "CLOSE"
             self.openClose.textColor = .red
-            self.openClose.backgroundColor = .systemFill
+            if #available(iOS 13.0, *) {
+                self.openClose.backgroundColor = .systemFill
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
 
