@@ -11,7 +11,7 @@ import UIKit
 extension IssuesRequest {
     func toIssueListData() -> IssueListData{
         let open = self.state == "open"
-        let data = IssueListData(title: self.title ?? "???", open: open)
+        let data = IssueListData(id: self.id ?? -1 ,title: self.title ?? "???", open: open)
         return data
     }
     
@@ -20,7 +20,7 @@ extension IssuesRequest {
         let imageData = try? Data(contentsOf: avatar_url!)
         let image = UIImage(data: imageData!)
         //to consider: make view model is responsability to tell the view to load imagess from url
-        let data = IssueDetailData(title:  self.title ?? "???", userAvatarImage: image!, userName: self.author_association ?? "???", created: self.created_at ?? "???", issueDescription: self.body ?? "???")
+        let data = IssueDetailData(title:  self.title ?? "???", userAvatarImage: image!, userName: self.user?.login ?? "???", created: self.created_at ?? "???", issueDescription: self.body ?? "???")
         return data
     }
 }
