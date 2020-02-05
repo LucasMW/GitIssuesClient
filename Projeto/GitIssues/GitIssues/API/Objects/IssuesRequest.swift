@@ -14,7 +14,11 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 import Foundation
 import ObjectMapper
 
-struct IssuesRequest : Mappable {
+struct IssuesRequest : Mappable, Equatable {
+    static func == (lhs: IssuesRequest, rhs: IssuesRequest) -> Bool {
+        return lhs.id == rhs.id && lhs.node_id == rhs.node_id
+    }
+    
 	var url : String?
 	var repository_url : String?
 	var labels_url : String?
