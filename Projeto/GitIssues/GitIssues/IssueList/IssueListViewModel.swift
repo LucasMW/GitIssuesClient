@@ -7,3 +7,22 @@
 //
 
 import Foundation
+
+class IssueListViewModel {
+    
+    var issues: Observable<[IssueListData]> = Observable([])
+    var repository = IssueRepository.main
+    
+    init() {
+        repository.issues.observe { (requests) in
+            print("Mapping to issueList")
+            self.issues.value = requests.mapToIssueListData()
+            print("Finish Mapping")
+        }
+    }
+    func loadIssues() {
+        
+        repository.getIsssuesFrom("apple/swift")
+        
+    }
+}

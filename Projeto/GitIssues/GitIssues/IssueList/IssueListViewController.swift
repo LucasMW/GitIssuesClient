@@ -7,16 +7,18 @@
 //
 
 import UIKit
-
+import NVActivityIndicatorView
 struct IssueListData : Equatable {
+    var id : Int
     var title : String
     var open : Bool
 }
-class IssueListViewController  : ViewController{
+class IssueListViewController  : UIViewController, NVActivityIndicatorViewable {
+    private var viewModel = IssueListViewModel()
     
-    var issues = [IssueListData(title: "Issue1", open: true),
-    IssueListData(title: "Issue2", open: false),
-    IssueListData(title: "Issue3", open: true)]
+    var issues = [IssueListData(id: 0, title: "Issue1", open: true),
+                  IssueListData(id: 1, title: "Issue2", open: false),
+                  IssueListData(id: 2, title: "Issue3", open: true)]
     //dummy data
     @IBOutlet weak var tableView: UITableView!
     
@@ -24,12 +26,23 @@ class IssueListViewController  : ViewController{
         print("IssueList")
         tableView.dataSource = self
         tableView.delegate = self
-        
         let nib = UINib(nibName: "IssueListTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "IssueListTableViewCell")
-        
-        tableView.reloadData()
-        
+         self.startAnimating( message: "Loading", minimumDisplayTime: 2)
+        DispatchQueue.init(label: "x").async {
+            self.viewModel.loadIssues()
+            self.viewModel.issues.observe { (issues) in
+                self.issues = issues.count > 0 ? issues : self.issues
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.stopAnimating()
+                }
+            }
+        }
+            
+    }
+    override func viewWillAppear(_ animated: Bool) {
+       
     }
     
 }
@@ -38,7 +51,7 @@ extension IssueListViewController : UITableViewDelegate, UITableViewDataSource {
         return issues.count
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        loadDetail()
+        loadDetail(indexPath: indexPath)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = { () -> IssueListTableViewCell in
@@ -52,8 +65,11 @@ extension IssueListViewController : UITableViewDelegate, UITableViewDataSource {
                }()
         return cell
     }
-    func loadDetail() {
+    func loadDetail(indexPath: IndexPath) {
+        let issue = self.issues[indexPath.row]
+        
         let detailVC = IssueDetailViewController(nibName: "IssueDetailViewController", bundle: nil)
+        detailVC.issueId = issue.id
         let _ = self.navigationController?.display(viewController: detailVC, animated: true)
         //self.navigationController?.pushViewController(detailVC , animated: false)
     }
