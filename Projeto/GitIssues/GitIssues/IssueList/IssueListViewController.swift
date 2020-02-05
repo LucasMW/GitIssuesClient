@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct IssueListData {
+struct IssueListData : Equatable {
     var title : String
     var open : Bool
 }
@@ -53,7 +53,9 @@ extension IssueListViewController : UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func loadDetail() {
-        self.navigationController?.pushViewController( IssueDetailViewController(nibName: "IssueDetailViewController", bundle: nil), animated: true)
+        let detailVC = IssueDetailViewController(nibName: "IssueDetailViewController", bundle: nil)
+        let _ = self.navigationController?.display(viewController: detailVC, animated: true)
+        //self.navigationController?.pushViewController(detailVC , animated: false)
     }
     
     
