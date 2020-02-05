@@ -8,6 +8,7 @@ target 'GitIssues' do
   # Pods for GitIssues
   pod 'NVActivityIndicatorView'
   pod 'Alamofire'
+  pod 'ObjectMapper'
 
   target 'GitIssuesTests' do
     inherit! :search_paths
