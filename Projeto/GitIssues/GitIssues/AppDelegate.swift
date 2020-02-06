@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let initialViewConroller = UIStoryboard(name: "IssueList", bundle: nil).instantiateInitialViewController()
 //            as! IssueListViewController
 //        initialViewConroller.modalPresentationStyle = .fullScreen
-        let navigationVC = UINavigationController(rootViewController:  vc2)
+        let navigationVC = UINavigationController(rootViewController: vc2)
         
         window?.rootViewController = navigationVC
         window?.makeKeyAndVisible()
